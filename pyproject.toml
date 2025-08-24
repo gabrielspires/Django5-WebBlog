@@ -1,0 +1,25 @@
+[project]
+name = "django-blog"
+version = "0.1.0"
+description = "A Web blog made in Django"
+authors = [
+    {name = "Gabriel Pires",email = "gabrielhpires@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django (>=5.2.5,<6.0.0)",
+    "asgiref (>=3.9.1,<4.0.0)",
+    "sqlparse (>=0.5.3,<0.6.0)",
+    "python-decouple (>=3.8,<4.0)"
+]
+
+[tool.poetry]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.1"
+djlint = "^1.36.4"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
