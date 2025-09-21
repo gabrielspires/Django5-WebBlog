@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from taggit.managers import TaggableManager
 
 
 class PublishedManager(models.Manager):
@@ -25,9 +26,12 @@ class Post(models.Model):
     publish = models.DateTimeField(default=timezone.now())
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=2, choices=Status, default=Status.DRAFT)
+    status = models.CharField(
+        max_length=2, choices=Status, default=Status.DRAFT
+    )
     objects = models.Manager()  # The default manager.
     published = PublishedManager()  # Our custom manager.
+    tags = TaggableManager()
 
     class Meta:
         ordering = ["-publish"]
@@ -41,12 +45,19 @@ class Post(models.Model):
         que representa a url principal pra esse modelo."""
         return reverse(
             "blog:post_detail",
-            args=[self.publish.year, self.publish.month, self.publish.day, self.slug],
+            args=[
+                self.publish.year,
+                self.publish.month,
+                self.publish.day,
+                self.slug,
+            ],
         )
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name="comments"
+    )
     name = models.CharField(max_length=80)
     email = models.EmailField()
     body = models.TextField()
